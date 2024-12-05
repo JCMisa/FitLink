@@ -5,6 +5,12 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitLink", "FitLink\FitLink.csproj", "{275B3D0C-A544-46E8-8D1B-FD1F3E48F991}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitLink.Domain", "FitLink.Domain\FitLink.Domain.csproj", "{3F55AFF6-4D9C-427A-9CD2-1023222BD6F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitLink.Application", "FitLink.Application\FitLink.Application.csproj", "{78B616A5-60ED-4208-BC27-CFCAF63B69C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitLink.Infrastructure", "FitLink.Infrastructure\FitLink.Infrastructure.csproj", "{27FD18DB-179E-4752-A893-34E3D9FF1A60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{275B3D0C-A544-46E8-8D1B-FD1F3E48F991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{275B3D0C-A544-46E8-8D1B-FD1F3E48F991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{275B3D0C-A544-46E8-8D1B-FD1F3E48F991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F55AFF6-4D9C-427A-9CD2-1023222BD6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F55AFF6-4D9C-427A-9CD2-1023222BD6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F55AFF6-4D9C-427A-9CD2-1023222BD6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F55AFF6-4D9C-427A-9CD2-1023222BD6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B616A5-60ED-4208-BC27-CFCAF63B69C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B616A5-60ED-4208-BC27-CFCAF63B69C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B616A5-60ED-4208-BC27-CFCAF63B69C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B616A5-60ED-4208-BC27-CFCAF63B69C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27FD18DB-179E-4752-A893-34E3D9FF1A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27FD18DB-179E-4752-A893-34E3D9FF1A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27FD18DB-179E-4752-A893-34E3D9FF1A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27FD18DB-179E-4752-A893-34E3D9FF1A60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

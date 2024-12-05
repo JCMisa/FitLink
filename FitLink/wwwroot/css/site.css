@@ -20,3 +20,32 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* custom-dark-theme.css */
+:root {
+    --bs-body-bg: #121212; /* Darker background */
+    --bs-body-color: #e0e0e0; /* Lighter text */
+    --bs-link-color: #bb86fc; /* Custom link color */
+    --bs-btn-bg: #6200ea; /* Custom button background */
+    --bs-btn-color: #ffffff; /* Custom button text color */
+    --bs-border-color: #333333; /* Custom border color */
+}
+/* Apply custom styles to Bootstrap components */
+
+body {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+a {
+    color: var(--bs-link-color);
+}
+
+.btn {
+    background-color: var(--bs-btn-bg);
+    color: var(--bs-btn-color);
+}
+
+.border {
+    border-color: var(--bs-border-color) !important;
+}
