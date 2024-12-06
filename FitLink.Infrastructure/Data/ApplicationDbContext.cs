@@ -16,11 +16,13 @@ namespace FitLink.Infrastructure.Data
         }
 
         public DbSet<Coach> Coaches { get; set; }
+        public DbSet<CoachNumber> CoachNumbers { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			//base.OnModelCreating(modelBuilder);
 
+			// seed te coach table
 			modelBuilder.Entity<Coach>().HasData(
 				new Coach
 				{
@@ -53,6 +55,51 @@ namespace FitLink.Infrastructure.Data
 					ImageUrl = "https://via.placeholder.com/150"
 				}
 			);
-		}
+
+			// seed the coachNumber table
+			modelBuilder.Entity<CoachNumber>().HasData(
+				new CoachNumber
+				{
+					Coach_Number = 101,
+					CoachId = 1
+				},
+                new CoachNumber
+                {
+                    Coach_Number = 102,
+                    CoachId = 1
+                },
+                new CoachNumber
+                {
+                    Coach_Number = 103,
+                    CoachId = 3
+                },
+                new CoachNumber
+                {
+                    Coach_Number = 201,
+                    CoachId = 3
+                },
+                new CoachNumber
+                {
+                    Coach_Number = 202,
+                    CoachId = 4
+                },
+                new CoachNumber
+                {
+                    Coach_Number = 203,
+                    CoachId = 4
+                },
+                new CoachNumber
+                {
+                    Coach_Number = 301,
+                    CoachId = 4
+                },
+                new CoachNumber
+                {
+                    Coach_Number = 302,
+                    CoachId = 5
+                }
+            );
+
+        }
 	}
 }

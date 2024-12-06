@@ -1,0 +1,59 @@
+﻿@model IEnumerable<CoachNumber>
+
+<h1>Coaches List</h1>
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-warning bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-black py-2">Coach Number List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <div class="row pb-3">
+            <div class="col-6 offset-6 text-end">
+                <a asp-controller="CoachNumber" asp-action="Create" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Create New Coach Number
+                </a>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Coach Name
+                    </th>
+                    <th>Coach Number</th>
+                    <th>Special Details</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>
+                            @obj.Coach.Name
+                        </td>
+                        <td>@obj.Coach_Number</td>
+                        <td>@obj.SpecialDetails</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="CoachNumber" asp-action="Update" asp-route-coachId="@obj.Coach_Number"
+                                   class="btn btn-warning mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="CoachNumber" asp-action="Delete" asp-route-coachId="@obj.Coach_Number"
+                                   class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
