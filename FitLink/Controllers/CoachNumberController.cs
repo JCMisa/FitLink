@@ -92,7 +92,7 @@ namespace FitLink.Controllers
             return View(coachNumberVM);
         }
 
-        // update the coach
+        // update the coach number
         [HttpPost]
         public IActionResult Update(CoachNumberVM coachNumberVM)
         {
@@ -117,30 +117,42 @@ namespace FitLink.Controllers
 
 
 
-        // display delete page
-        public IActionResult Delete(int coachId)
+        // display delete page for coach number
+        public IActionResult Delete(int coachNumberId)
         {
-            Coach? obj = db.Coaches.FirstOrDefault(c => c.Id == coachId);
-            if (obj is null)
+            CoachNumberVM coachNumberVM = new()
+            {
+                CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                CoachNumber = db.CoachNumbers.FirstOrDefault(u => u.Coach_Number == coachNumberId)
+            };
+
+            if (coachNumberVM.CoachNumber is null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(obj);
+
+            return View(coachNumberVM);
         }
 
-        // delete the coach
+        // delete the coach number
         [HttpPost]
-        public IActionResult Delete(Coach obj)
+        public IActionResult Delete(CoachNumberVM coachNumberVM)
         {
-            Coach? objFromDb = db.Coaches.FirstOrDefault(c => c.Id == obj.Id);
+            CoachNumber? objFromDb = db.CoachNumbers.FirstOrDefault(c => c.Coach_Number == coachNumberVM.CoachNumber.Coach_Number);
+
             if (objFromDb is not null)
             {
-                db.Coaches.Remove(objFromDb);
+                db.CoachNumbers.Remove(objFromDb);
                 db.SaveChanges();
-                TempData["success"] = "The coach has been deleted successfully.";
-                return RedirectToAction("Index", "Coach");
+                TempData["success"] = "The coach number has been deleted successfully.";
+                return RedirectToAction("Index", "CoachNumber");
             }
-            TempData["error"] = "Internal error while deleting the coach.";
+
+            TempData["error"] = "Internal error while deleting the coach number.";
             return View();
         }
     }
