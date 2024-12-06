@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +26,9 @@ namespace FitLink.Domain.Entities
 
         [Range(1, 10)]
         public int Occupancy { get; set; } // number ng students na kayang i-handle ni coach in a single session
+
+        [NotMapped] // dont add the property to the database is wat notmapped anotation do
+        public IFormFile? Image { get; set; }
 
         [Display(Name = "Image URL")]
         public string? ImageUrl { get; set; }

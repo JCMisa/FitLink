@@ -8,9 +8,11 @@ namespace FitLink.Controllers
 	public class CoachController : Controller
 	{
 		private readonly IUnitOfWork unitOfWork;
-        public CoachController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public CoachController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             this.unitOfWork = unitOfWork;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -43,6 +45,22 @@ namespace FitLink.Controllers
             }
             if (ModelState.IsValid)
 			{
+                // function to add an image from local machine rather than a url link
+                if(obj.Image != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+                    string imagePath = Path.Combine(webHostEnvironment.WebRootPath, @"images\CoachImage");
+
+                    using var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create);
+                    obj.Image.CopyTo(fileStream);
+
+                    obj.ImageUrl = @"\images\CoachImage\" + fileName;
+                }
+                else
+                {
+                    obj.ImageUrl = "https://www.pngkey.com/png/full/73-730477_first-name-profile-image-placeholder-png.png";
+                }
+
                 unitOfWork.Coach.Add(obj);
                 unitOfWork.Save();
                 TempData["success"] = "The coach has been created successfully.";
@@ -72,7 +90,29 @@ namespace FitLink.Controllers
         {
             if (ModelState.IsValid && obj.Id > 0)
             {
-                unitOfWork.Coach.Update(obj);
+
+				if (obj.Image != null)
+				{
+					string fileName = Guid.NewGuid().ToString() + Path.GetExtension(obj.Image.FileName);
+					string imagePath = Path.Combine(webHostEnvironment.WebRootPath, @"images\CoachImage");
+
+                    if(!string.IsNullOrEmpty(obj.ImageUrl)) // check if imageUrl is there
+                    {
+                        var oldImagePath = Path.Combine(webHostEnvironment.WebRootPath, obj.ImageUrl.TrimStart('\\')); // then dont delete it, else replace it
+
+                        if(System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+					using var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create);
+					obj.Image.CopyTo(fileStream);
+
+					obj.ImageUrl = @"\images\CoachImage\" + fileName;
+				}
+
+				unitOfWork.Coach.Update(obj);
                 unitOfWork.Save();
                 TempData["success"] = "The coach has been updated successfully.";
                 return RedirectToAction("Index", "Coach");
@@ -103,7 +143,17 @@ namespace FitLink.Controllers
             Coach? objFromDb = unitOfWork.Coach.Get(c => c.Id == obj.Id);
             if (objFromDb is not null)
             {
-                unitOfWork.Coach.Remove(objFromDb);
+				if (!string.IsNullOrEmpty(objFromDb.ImageUrl)) // check if imageUrl is there
+				{
+					var oldImagePath = Path.Combine(webHostEnvironment.WebRootPath, objFromDb.ImageUrl.TrimStart('\\'));
+
+					if (System.IO.File.Exists(oldImagePath))
+					{
+						System.IO.File.Delete(oldImagePath);
+					}
+				}
+
+				unitOfWork.Coach.Remove(objFromDb);
                 unitOfWork.Save();
                 TempData["success"] = "The coach has been deleted successfully.";
                 return RedirectToAction("Index", "Coach");
