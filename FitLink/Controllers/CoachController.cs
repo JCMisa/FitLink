@@ -1,4 +1,5 @@
-﻿using FitLink.Domain.Entities;
+﻿using FitLink.Application.Common.Interfaces;
+using FitLink.Domain.Entities;
 using FitLink.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,16 +7,19 @@ namespace FitLink.Controllers
 {
 	public class CoachController : Controller
 	{
-		private readonly ApplicationDbContext db;
-        public CoachController(ApplicationDbContext db)
+		private readonly IUnitOfWork unitOfWork;
+        public CoachController(IUnitOfWork unitOfWork)
         {
-            this.db = db;
+            this.unitOfWork = unitOfWork;
         }
+
+
+
 
 		// get all coach
         public IActionResult Index()
 		{
-			var coaches = db.Coaches.ToList();
+			var coaches = unitOfWork.Coach.GetAll();
 			return View(coaches);
 		}
 
@@ -39,8 +43,8 @@ namespace FitLink.Controllers
             }
             if (ModelState.IsValid)
 			{
-				db.Coaches.Add(obj);
-				db.SaveChanges();
+                unitOfWork.Coach.Add(obj);
+                unitOfWork.Save();
                 TempData["success"] = "The coach has been created successfully.";
                 return RedirectToAction("Index", "Coach");
 			}
@@ -54,7 +58,7 @@ namespace FitLink.Controllers
         // display the update form
         public IActionResult Update(int coachId)
         {
-            Coach? obj = db.Coaches.FirstOrDefault(c => c.Id == coachId);
+            Coach? obj = unitOfWork.Coach.Get(u => u.Id == coachId);
             if (obj is null)
             {
                 return RedirectToAction("Error", "Home");
@@ -68,8 +72,8 @@ namespace FitLink.Controllers
         {
             if (ModelState.IsValid && obj.Id > 0)
             {
-                db.Coaches.Update(obj);
-                db.SaveChanges();
+                unitOfWork.Coach.Update(obj);
+                unitOfWork.Save();
                 TempData["success"] = "The coach has been updated successfully.";
                 return RedirectToAction("Index", "Coach");
             }
@@ -84,7 +88,7 @@ namespace FitLink.Controllers
         // display delete page
         public IActionResult Delete(int coachId)
         {
-            Coach? obj = db.Coaches.FirstOrDefault(c => c.Id == coachId);
+            Coach? obj = unitOfWork.Coach.Get(c => c.Id == coachId);
             if (obj is null)
             {
                 return RedirectToAction("Error", "Home");
@@ -96,11 +100,11 @@ namespace FitLink.Controllers
         [HttpPost]
         public IActionResult Delete(Coach obj)
         {
-            Coach? objFromDb = db.Coaches.FirstOrDefault(c => c.Id == obj.Id);
+            Coach? objFromDb = unitOfWork.Coach.Get(c => c.Id == obj.Id);
             if (objFromDb is not null)
             {
-                db.Coaches.Remove(objFromDb);
-                db.SaveChanges();
+                unitOfWork.Coach.Remove(objFromDb);
+                unitOfWork.Save();
                 TempData["success"] = "The coach has been deleted successfully.";
                 return RedirectToAction("Index", "Coach");
             }

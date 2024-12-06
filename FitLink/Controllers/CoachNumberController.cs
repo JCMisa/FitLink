@@ -1,4 +1,5 @@
-﻿using FitLink.Domain.Entities;
+﻿using FitLink.Application.Common.Interfaces;
+using FitLink.Domain.Entities;
 using FitLink.Infrastructure.Data;
 using FitLink.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,16 @@ namespace FitLink.Controllers
 {
 	public class CoachNumberController : Controller
 	{
-		private readonly ApplicationDbContext db;
-        public CoachNumberController(ApplicationDbContext db)
+        private readonly IUnitOfWork unitOfWork;
+        public CoachNumberController(IUnitOfWork unitOfWork)
         {
-            this.db = db;
+            this.unitOfWork = unitOfWork;
         }
 
-		// get all coach numbers
+        // get all coach numbers
         public IActionResult Index()
 		{
-			var coachNumbers = db.CoachNumbers.Include(u => u.Coach).ToList();
+            var coachNumbers = unitOfWork.CoachNumber.GetAll(includeProperties: "Coach");
 			return View(coachNumbers);
 		}
 
@@ -31,7 +32,7 @@ namespace FitLink.Controllers
 		{
             CoachNumberVM coachNumberVM = new()
             {
-                CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+                CoachList = unitOfWork.Coach.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -44,12 +45,12 @@ namespace FitLink.Controllers
         [HttpPost]
         public IActionResult Create(CoachNumberVM obj)
         {
-            bool coachNumberExist = db.CoachNumbers.Any(n => n.Coach_Number == obj.CoachNumber.Coach_Number); // returns true kung already exist na yung nilagay na coach number
+            bool coachNumberExist = unitOfWork.CoachNumber.Any(n => n.Coach_Number == obj.CoachNumber.Coach_Number); // returns true kung already exist na yung nilagay na coach number
 
             if (ModelState.IsValid && !coachNumberExist)
 			{
-				db.CoachNumbers.Add(obj.CoachNumber);
-				db.SaveChanges();
+				unitOfWork.CoachNumber.Add(obj.CoachNumber);
+                unitOfWork.Save();
                 TempData["success"] = "The coach number has been created successfully.";
                 return RedirectToAction("Index", "CoachNumber");
 			}
@@ -59,7 +60,7 @@ namespace FitLink.Controllers
                 TempData["error"] = "Coach Number already exist.";
             }
 
-            obj.CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+            obj.CoachList = unitOfWork.Coach.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
@@ -76,12 +77,12 @@ namespace FitLink.Controllers
         {
             CoachNumberVM coachNumberVM = new()
             {
-                CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+                CoachList = unitOfWork.Coach.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 }),
-                CoachNumber = db.CoachNumbers.FirstOrDefault(u => u.Coach_Number == coachNumberId)
+                CoachNumber = unitOfWork.CoachNumber.Get(u => u.Coach_Number == coachNumberId)
             };
 
             if(coachNumberVM.CoachNumber is null)
@@ -98,13 +99,13 @@ namespace FitLink.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.CoachNumbers.Update(coachNumberVM.CoachNumber);
-                db.SaveChanges();
+                unitOfWork.CoachNumber.Update(coachNumberVM.CoachNumber);
+                unitOfWork.Save();
                 TempData["success"] = "The coach number has been updated successfully.";
                 return RedirectToAction("Index", "CoachNumber");
             }
 
-            coachNumberVM.CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+            coachNumberVM.CoachList = unitOfWork.Coach.GetAll().Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
@@ -122,12 +123,12 @@ namespace FitLink.Controllers
         {
             CoachNumberVM coachNumberVM = new()
             {
-                CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+                CoachList = unitOfWork.Coach.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 }),
-                CoachNumber = db.CoachNumbers.FirstOrDefault(u => u.Coach_Number == coachNumberId)
+                CoachNumber = unitOfWork.CoachNumber.Get(u => u.Coach_Number == coachNumberId)
             };
 
             if (coachNumberVM.CoachNumber is null)
@@ -142,12 +143,12 @@ namespace FitLink.Controllers
         [HttpPost]
         public IActionResult Delete(CoachNumberVM coachNumberVM)
         {
-            CoachNumber? objFromDb = db.CoachNumbers.FirstOrDefault(c => c.Coach_Number == coachNumberVM.CoachNumber.Coach_Number);
+            CoachNumber? objFromDb = unitOfWork.CoachNumber.Get(c => c.Coach_Number == coachNumberVM.CoachNumber.Coach_Number);
 
             if (objFromDb is not null)
             {
-                db.CoachNumbers.Remove(objFromDb);
-                db.SaveChanges();
+                unitOfWork.CoachNumber.Remove(objFromDb);
+                unitOfWork.Save();
                 TempData["success"] = "The coach number has been deleted successfully.";
                 return RedirectToAction("Index", "CoachNumber");
             }

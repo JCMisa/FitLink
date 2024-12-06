@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FitLink.Application\FitLink.Application.csproj" />
     <ProjectReference Include="..\FitLink.Domain\FitLink.Domain.csproj" />
   </ItemGroup>
 
