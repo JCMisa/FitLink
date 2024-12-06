@@ -72,29 +72,45 @@ namespace FitLink.Controllers
 
 
         // display the update form of coach numbers
-        public IActionResult Update(int coachId)
+        public IActionResult Update(int coachNumberId)
         {
-            Coach? obj = db.Coaches.FirstOrDefault(c => c.Id == coachId);
-            if (obj is null)
+            CoachNumberVM coachNumberVM = new()
+            {
+                CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                CoachNumber = db.CoachNumbers.FirstOrDefault(u => u.Coach_Number == coachNumberId)
+            };
+
+            if(coachNumberVM.CoachNumber is null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(obj);
+
+            return View(coachNumberVM);
         }
 
         // update the coach
         [HttpPost]
-        public IActionResult Update(Coach obj)
+        public IActionResult Update(CoachNumberVM coachNumberVM)
         {
-            if (ModelState.IsValid && obj.Id > 0)
+            if (ModelState.IsValid)
             {
-                db.Coaches.Update(obj);
+                db.CoachNumbers.Update(coachNumberVM.CoachNumber);
                 db.SaveChanges();
-                TempData["success"] = "The coach has been updated successfully.";
-                return RedirectToAction("Index", "Coach");
+                TempData["success"] = "The coach number has been updated successfully.";
+                return RedirectToAction("Index", "CoachNumber");
             }
-            TempData["error"] = "Internal error while updating the coach.";
-            return View();
+
+            coachNumberVM.CoachList = db.Coaches.ToList().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+
+            return View(coachNumberVM);
         }
 
 

@@ -1,0 +1,54 @@
+﻿@model CoachNumberVM
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-warning bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-black py-2">Update Coach Number</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="CoachNumber.Coach_Number" hidden />
+            <div class="p-3">
+                <div class="form-floating py-1 col-12">
+                    <select asp-for="@Model.CoachNumber.CoachId" asp-items="@Model.CoachList" class="form-select border shadow">
+                        <option disabled selected>-- Select Coach --</option>
+                    </select>
+                    <label asp-for="CoachNumber.CoachId" class="ms-2"></label>
+                    <span asp-validation-for="CoachNumber.CoachId" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="CoachNumber.Coach_Number" class="form-control border shadow" disabled />
+                    <label asp-for="CoachNumber.Coach_Number" class="ms-2"></label>
+                    <span asp-validation-for="CoachNumber.Coach_Number" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="CoachNumber.SpecialDetails" class="form-control border shadow" />
+                    <label asp-for="CoachNumber.SpecialDetails" class="ms-2"></label>
+                    <span asp-validation-for="CoachNumber.SpecialDetails" class="text-danger"></span>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="bi bi-pencil"></i> Update
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="CoachNumber" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
