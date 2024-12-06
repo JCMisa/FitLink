@@ -17,6 +17,7 @@ namespace FitLink.Infrastructure.Data
 
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<CoachNumber> CoachNumbers { get; set; }
+		public DbSet<FitProgram> FitPrograms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -100,6 +101,20 @@ namespace FitLink.Infrastructure.Data
                 }
             );
 
-        }
+			// seed the coachNumber table
+			modelBuilder.Entity<FitProgram>().HasData(
+				new FitProgram { Id = 1, CoachId = 1, Name = "Strength Training Basics" }, 
+				new FitProgram { Id = 2, CoachId = 3, Name = "Advanced Cardio Workouts" }, 
+				new FitProgram { Id = 3, CoachId = 4, Name = "Yoga for Beginners" }, 
+				new FitProgram { Id = 4, CoachId = 8, Name = "HIIT and Fat Loss" }, 
+				new FitProgram { Id = 5, CoachId = 1, Name = "Holistic Wellness Plan" }, 
+				new FitProgram { Id = 6, CoachId = 3, Name = "Endurance Building" }, 
+				new FitProgram { Id = 7, CoachId = 4, Name = "Flexibility and Mobility" }, 
+				new FitProgram { Id = 8, CoachId = 5, Name = "Nutritional Guidance" }, 
+				new FitProgram { Id = 9, CoachId = 8, Name = "Strength and Conditioning" }, 
+				new FitProgram { Id = 10, CoachId = 3, Name = "Meditation and Relaxation" },
+				new FitProgram { Id = 11, CoachId = 4, Name = "Boot Camp Intensive" }
+			);
+		}
 	}
 }

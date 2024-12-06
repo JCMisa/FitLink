@@ -13,11 +13,13 @@ namespace FitLink.Infrastructure.Repository
         private readonly ApplicationDbContext db;
         public ICoachRepository Coach { get; private set; }
         public ICoachNumberRepository CoachNumber { get; private set; }
-        public UnitOfWork(ApplicationDbContext db)
+		public IFitProgramRepository FitProgram { get; private set; }
+		public UnitOfWork(ApplicationDbContext db)
         {
             this.db = db;
             Coach = new CoachRepository(this.db);
             CoachNumber = new CoachNumberRepository(this.db);
+            FitProgram = new FitProgramRepository(this.db);
         }
 
         public void Save()

@@ -10,6 +10,7 @@ namespace FitLink.Application.Common.Interfaces
     {
         ICoachRepository Coach { get; }
         ICoachNumberRepository CoachNumber { get; }
+        IFitProgramRepository FitProgram { get; }
         void Save();
     }
 }

@@ -26,16 +26,22 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Booking" asp-action="Index">Bookings</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Coach" asp-action="Index">Coach</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="CoachNumber" asp-action="Index">CoachNumber</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Content Management
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Coach" asp-action="Index">Coach</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="CoachNumber" asp-action="Index">CoachNumber</a>
+                                </li>                            
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="FitProgram" asp-action="Index">Program</a>
+                                </li>
+                            </ul>
                         </li>
 
                     </ul>
@@ -50,8 +56,8 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="">
+        <main role="main">
             <partial name="_Notification" />
             @RenderBody()
         </main>
